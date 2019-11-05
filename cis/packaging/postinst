@@ -1,12 +1,12 @@
 #!/bin/bash
 CONFIGURATION_PATH=/var/rudder/packages/rudder-plugin-cis
+FOLDERS="ncf/30_generic_methods/cis ncf/50_techniques/CIS_plugin techniques/CIS_plugin techniques/ncf_techniques/CIS_plugin"
 
 # Import Generic Methods
 cd /var/rudder/configuration-repository/
 git reset
-for file in "ncf/30_generic_methods/cis"
+for file in $FOLDERS
 do
-
   chown -R root:rudder $file
   chmod 664 -R $file
   chmod -R +X $file

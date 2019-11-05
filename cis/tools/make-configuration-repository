@@ -1,0 +1,26 @@
+#!/usr/bin/bash
+SOURCE_DIR=target/techniques
+CONFIG_REPO=target/configuration-repository
+CATEGORY="CIS plugin"
+C_CATEGORY=$(echo $CATEGORY | sed "s/[^a-zA-Z0-9_]/_/g")
+
+mkdir -p $CONFIG_REPO/techniques/ncf_techniques/$C_CATEGORY
+for file in $SOURCE_DIR/*; do
+  BASE=$(echo $file | sed "s/.*\///" | sed "s/\.[^.]*$//")
+  C_BASE=$(echo $BASE | sed "s/[^a-zA-Z0-9_]/_/g")
+  mkdir -p $CONFIG_REPO/ncf/50_techniques/$C_CATEGORY/$C_BASE
+  touch $CONFIG_REPO/ncf/50_techniques/$C_CATEGORY/$C_BASE/$C_BASE.cf
+  mkdir -p $CONFIG_REPO/techniques/$C_CATEGORY/$C_BASE
+  cd $CONFIG_REPO/techniques/ncf_techniques/$C_CATEGORY && ln -rs ../../$C_CATEGORY/$C_BASE && cd -
+done
+
+
+cat <<EOT > $CONFIG_REPO/techniques/$C_CATEGORY/category.xml
+<xml>
+  <name>$CATEGORY</name>
+  <description>
+    Techniques from the CIS plugin
+  </description>
+</xml>
+EOT
+
